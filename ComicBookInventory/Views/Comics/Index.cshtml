@@ -5,6 +5,11 @@
 }
 
 <h1>Search Your Comic Inventory</h1>
+<br/>
+<form asp-controller="comics" asp-action="Index">
+    <input name="searchQuery" placeholder="Title or Publisher" />
+    <button>Search</button>
+</form>
 
 
 <table class="table">
@@ -31,10 +36,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Notes)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ComicImage)
-            </th>
-            <th></th>
+        
         </tr>
     </thead>
     <tbody>
@@ -62,9 +64,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Notes)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ComicImage)
-                </td>
+             
                 <td>
 
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a>
