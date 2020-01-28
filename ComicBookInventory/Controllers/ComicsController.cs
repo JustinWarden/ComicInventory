@@ -31,13 +31,17 @@ namespace ComicBookInventory.Controllers
         {
             ApplicationUser loggedInUser = await GetCurrentUserAsync();
 
-            List<Comic> comics = await _context.Comics.Where(c => c.User == loggedInUser).ToListAsync();
-
+            List<Comic> comics = await _context.Comics.Where(c => c.User == loggedInUser).OrderBy(c => c.Publisher).ToListAsync();
+          
 
             if (searchQuery != null)
             {
-                comics = comics.Where(comic => comic.Title.ToLower().Contains(searchQuery) || comic.Publisher.ToLower().Contains(searchQuery)).ToList();
+                comics = comics.Where(comic => comic.Title.ToLower().Contains(searchQuery) || 
+                comic.Publisher.ToLower().Contains(searchQuery)).ToList();
+                    
+                    
             }
+            
 
 
             return View(comics);

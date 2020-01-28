@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ComicBookInventory.Models
 {
-
-    public class Comic
+    public class Wishlist
     {
+
         public int Id { get; set; }
 
         [Required]
@@ -18,7 +18,7 @@ namespace ComicBookInventory.Models
 
         public string Title { get; set; }
 
-        public int? IssueNumber { get; set; }
+        public int IssueNumber { get; set; }
 
         public string Publisher { get; set; }
 
@@ -36,5 +36,4 @@ namespace ComicBookInventory.Models
         public byte[] ComicImage { get; set; }
 
     }
-
 }
