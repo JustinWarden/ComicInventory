@@ -5,6 +5,11 @@
 }
 
 <h1>Search Your Comic Inventory</h1>
+<br/>
+<form asp-controller="comics" asp-action="Index">
+    <input name="searchQuery" placeholder="Title or Publisher" />
+    <button>Search</button>
+</form>
 
 
 <table class="table">

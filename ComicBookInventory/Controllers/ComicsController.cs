@@ -7,25 +7,42 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ComicBookInventory.Data;
 using ComicBookInventory.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace ComicBookInventory.Controllers
 {
     public class ComicsController : Controller
     {
+            
         private readonly ApplicationDbContext _context;
-
-        public ComicsController(ApplicationDbContext context)
+        // Private field to store user manager
+        private readonly UserManager<ApplicationUser> _userManager;
+        public ComicsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+        // Private method to get current user
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Comics
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchQuery)
+               
         {
-            var applicationDbContext = _context.Comics.Include(c => c.User);
-            return View(await applicationDbContext.ToListAsync());
-        }
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
 
+            List<Comic> comics = await _context.Comics.Where(c => c.User == loggedInUser).ToListAsync();
+
+
+            if (searchQuery != null)
+            {
+                comics = comics.Where(comic => comic.Title.ToLower().Contains(searchQuery) || comic.Publisher.ToLower().Contains(searchQuery)).ToList();
+            }
+
+
+            return View(comics);
+        }
+     
         // GET: Comics/Details/5
         public async Task<IActionResult> Details(int? id)
         {
