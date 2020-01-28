@@ -34,8 +34,8 @@ namespace ComicBookInventory.Data
                     LockoutEnabled = false,
                     SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
                     Id = "00000000-ffff-ffff-ffff-ffffffffffff",
-                    FirstName = "Justin",
-                    LastName = "Warden",
+                    //FirstName = "Justin",
+                    //LastName = "Warden",
                 };
 
                 var passwordHash = new PasswordHasher<ApplicationUser>();
@@ -81,21 +81,10 @@ namespace ComicBookInventory.Data
                                  Price = 2.00,
                                  Notes = "",
                                  ComicImage = null,
-                             },
+                             }
+                             );
 
-                                      new Comic()
-                                      {
-                                          Id = 2,
-                                          UserId = "00000000-ffff-ffff-ffff-ffffffffffff",
-                                          Title = "Dracula",
-                                          Publisher = "Misc",
-                                          Year = 1995,
-                                          VolumeNumber = 3,
-                                          Price = 2.00,
-                                          Notes = "He gave me a goose pimple",
-                                          ComicImage = null,
-                                      }
-                                      );
+                                  
 
                 //modelBuilder.Entity<Order>().HasMany(Order => Order.OrderProducts)
                 //.WithOne(OrderProducts => OrderProducts.Order)
