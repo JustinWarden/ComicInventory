@@ -5,6 +5,13 @@
     <UserSecretsId>aspnet-ComicBookInventory-8CCC9F5B-A11A-44DD-8ECD-E97C9A756FAD</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\Images\kingdomcome.jpg" />
+    <None Include="wwwroot\Images\swampthing.jpg" />
+    <None Include="wwwroot\Images\watchmen.jpg" />
+    <None Include="wwwroot\Images\xmen.jpg" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.0.0" />
