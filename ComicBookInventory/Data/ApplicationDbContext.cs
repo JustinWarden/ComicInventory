@@ -100,5 +100,8 @@ namespace ComicBookInventory.Data
             //    .Property(D => D.DateCreated)
             //    .HasDefaultValueSql("GETDATE()");
         }
+         
+
+            public DbSet<ComicBookInventory.Models.Wishlist> Wishlist { get; set; }
         }
     }

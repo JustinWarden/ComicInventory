@@ -7,47 +7,26 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ComicBookInventory.Data;
 using ComicBookInventory.Models;
-using Microsoft.AspNetCore.Identity;
 
 namespace ComicBookInventory.Controllers
 {
-    public class ComicsController : Controller
+    public class WishlistsController : Controller
     {
-            
         private readonly ApplicationDbContext _context;
-        // Private field to store user manager
-        private readonly UserManager<ApplicationUser> _userManager;
-        public ComicsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+
+        public WishlistsController(ApplicationDbContext context)
         {
             _context = context;
-            _userManager = userManager;
         }
-        // Private method to get current user
-        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
-        // GET: Comics
-        public async Task<IActionResult> Index(string searchQuery)
-               
+        // GET: Wishlists
+        public async Task<IActionResult> Index()
         {
-            ApplicationUser loggedInUser = await GetCurrentUserAsync();
-
-            List<Comic> comics = await _context.Comics.Where(c => c.User == loggedInUser).OrderBy(c => c.Publisher).ToListAsync();
-          
-
-            if (searchQuery != null)
-            {
-                comics = comics.Where(comic => comic.Title.ToLower().Contains(searchQuery) || 
-                comic.Publisher.ToLower().Contains(searchQuery)).ToList();
-                    
-                    
-            }
-            
-
-
-            return View(comics);
+            var applicationDbContext = _context.Wishlist.Include(w => w.User);
+            return View(await applicationDbContext.ToListAsync());
         }
-     
-        // GET: Comics/Details/5
+
+        // GET: Wishlists/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -55,42 +34,42 @@ namespace ComicBookInventory.Controllers
                 return NotFound();
             }
 
-            var comic = await _context.Comics
-                .Include(c => c.User)
+            var wishlist = await _context.Wishlist
+                .Include(w => w.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (comic == null)
+            if (wishlist == null)
             {
                 return NotFound();
             }
 
-            return View(comic);
+            return View(wishlist);
         }
 
-        // GET: Comics/Create
+        // GET: Wishlists/Create
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
-        // POST: Comics/Create
+        // POST: Wishlists/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Comic comic)
+        public async Task<IActionResult> Create([Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Wishlist wishlist)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(comic);
+                _context.Add(wishlist);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comic.UserId);
-            return View(comic);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", wishlist.UserId);
+            return View(wishlist);
         }
 
-        // GET: Comics/Edit/5
+        // GET: Wishlists/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -98,23 +77,23 @@ namespace ComicBookInventory.Controllers
                 return NotFound();
             }
 
-            var comic = await _context.Comics.FindAsync(id);
-            if (comic == null)
+            var wishlist = await _context.Wishlist.FindAsync(id);
+            if (wishlist == null)
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comic.UserId);
-            return View(comic);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", wishlist.UserId);
+            return View(wishlist);
         }
 
-        // POST: Comics/Edit/5
+        // POST: Wishlists/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Comic comic)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Wishlist wishlist)
         {
-            if (id != comic.Id)
+            if (id != wishlist.Id)
             {
                 return NotFound();
             }
@@ -123,12 +102,12 @@ namespace ComicBookInventory.Controllers
             {
                 try
                 {
-                    _context.Update(comic);
+                    _context.Update(wishlist);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ComicExists(comic.Id))
+                    if (!WishlistExists(wishlist.Id))
                     {
                         return NotFound();
                     }
@@ -139,11 +118,11 @@ namespace ComicBookInventory.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comic.UserId);
-            return View(comic);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", wishlist.UserId);
+            return View(wishlist);
         }
 
-        // GET: Comics/Delete/5
+        // GET: Wishlists/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -151,31 +130,31 @@ namespace ComicBookInventory.Controllers
                 return NotFound();
             }
 
-            var comic = await _context.Comics
-                .Include(c => c.User)
+            var wishlist = await _context.Wishlist
+                .Include(w => w.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (comic == null)
+            if (wishlist == null)
             {
                 return NotFound();
             }
 
-            return View(comic);
+            return View(wishlist);
         }
 
-        // POST: Comics/Delete/5
+        // POST: Wishlists/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var comic = await _context.Comics.FindAsync(id);
-            _context.Comics.Remove(comic);
+            var wishlist = await _context.Wishlist.FindAsync(id);
+            _context.Wishlist.Remove(wishlist);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ComicExists(int id)
+        private bool WishlistExists(int id)
         {
-            return _context.Comics.Any(e => e.Id == id);
+            return _context.Wishlist.Any(e => e.Id == id);
         }
     }
 }

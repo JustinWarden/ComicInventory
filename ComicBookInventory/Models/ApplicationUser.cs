@@ -19,5 +19,7 @@ namespace ComicBookInventory.Models
 
        public virtual ICollection<Comic> Comics { get; set; }
 
+        public virtual ICollection<Wishlist> Wishlist { get; set; }
+
     }
 }
