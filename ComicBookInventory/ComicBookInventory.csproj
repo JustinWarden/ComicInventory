@@ -1,9 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <UserSecretsId>aspnet-ComicBookInventory-8CCC9F5B-A11A-44DD-8ECD-E97C9A756FAD</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\ApplicationDbContext.cs\**" />
+    <Content Remove="Data\ApplicationDbContext.cs\**" />
+    <EmbeddedResource Remove="Data\ApplicationDbContext.cs\**" />
+    <None Remove="Data\ApplicationDbContext.cs\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <None Include="wwwroot\Images\kingdomcome.jpg" />
