@@ -4,9 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Comic</h4>
+<h1>Add Comic to Inventory</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,12 +12,17 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class ="form-control" asp-items="ViewBag.UserId"></select>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IssueNumber" class="control-label"></label>
+                <input asp-for="IssueNumber" class="form-control" />
+                <span asp-validation-for="IssueNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Publisher" class="control-label"></label>
@@ -48,7 +51,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="ComicImage" class="control-label"></label>
-                <input asp-for="ComicImage"  type="file" />
+                <input asp-for="ComicImage" type="file" />
                 <span asp-validation-for="ComicImage" class="text-danger"></span>
             </div>
             <div class="form-group">
