@@ -78,7 +78,7 @@ namespace ComicBookInventory.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Comic comic)
+        public async Task<IActionResult> Create([Bind("Id,UserId,Title,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Comic comic)
         {
             if (ModelState.IsValid)
             {
@@ -112,7 +112,7 @@ namespace ComicBookInventory.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,Title,,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Comic comic)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,Title,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Comic comic)
         {
             if (id != comic.Id)
             {
