@@ -54,10 +54,12 @@ namespace ComicBookInventory.Controllers
             {
                 return NotFound();
             }
+            var user = await GetCurrentUserAsync();
 
             var comic = await _context.Comics
                 .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(c => c.Id == id && c.User == user);
+
             if (comic == null)
             {
                 return NotFound();
@@ -82,11 +84,14 @@ namespace ComicBookInventory.Controllers
         {
             if (ModelState.IsValid)
             {
+                var currentUser = await GetCurrentUserAsync();
+                comic.UserId = currentUser.Id;
                 _context.Add(comic);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comic.UserId);
+
             return View(comic);
         }
 
@@ -153,7 +158,7 @@ namespace ComicBookInventory.Controllers
 
             var comic = await _context.Comics
                 .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(c => c.Id == id);
             if (comic == null)
             {
                 return NotFound();

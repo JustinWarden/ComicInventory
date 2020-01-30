@@ -7,23 +7,33 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ComicBookInventory.Data;
 using ComicBookInventory.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace ComicBookInventory.Controllers
 {
     public class WishlistsController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public WishlistsController(ApplicationDbContext context)
+        // Private field to store user manager
+        private readonly UserManager<ApplicationUser> _userManager;
+        public WishlistsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+        // Private method to get current user
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Wishlists
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Wishlist.Include(w => w.User);
-            return View(await applicationDbContext.ToListAsync());
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
+
+            List<Wishlist> wishlists = await _context.Wishlist.Where(w => w.User == loggedInUser).OrderBy(w => w.Publisher).ToListAsync();
+            //var applicationDbContext = _context.Wishlist.Include(w => w.User);
+            //return View(await applicationDbContext.ToListAsync());
+
+            return View(wishlists);
         }
 
         // GET: Wishlists/Details/5
@@ -33,10 +43,11 @@ namespace ComicBookInventory.Controllers
             {
                 return NotFound();
             }
-
+            var user = await GetCurrentUserAsync();
             var wishlist = await _context.Wishlist
                 .Include(w => w.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (wishlist == null)
             {
                 return NotFound();
