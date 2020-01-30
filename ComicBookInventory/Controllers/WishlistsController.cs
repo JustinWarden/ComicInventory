@@ -74,11 +74,14 @@ namespace ComicBookInventory.Controllers
 
             if (ModelState.IsValid)
             {
+                var currentUser = await GetCurrentUserAsync();
+                wishlist.UserId = currentUser.Id;
                 _context.Add(wishlist);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", wishlist.UserId);
+
 
             return View(wishlist);
         }
@@ -96,6 +99,8 @@ namespace ComicBookInventory.Controllers
             {
                 return NotFound();
             }
+
+
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", wishlist.UserId);
             return View(wishlist);
         }
@@ -112,10 +117,13 @@ namespace ComicBookInventory.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var currentUser = await GetCurrentUserAsync();
+                    wishlist.UserId = currentUser.Id;
                     _context.Update(wishlist);
                     await _context.SaveChangesAsync();
                 }

@@ -100,6 +100,7 @@ namespace ComicBookInventory.Controllers
         // GET: Comics/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+          
             if (id == null)
             {
                 return NotFound();
@@ -121,15 +122,20 @@ namespace ComicBookInventory.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Comic comic)
         {
+          
             if (id != comic.Id)
             {
                 return NotFound();
             }
 
+            ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
                 try
                 {
+
+                    var currentUser = await GetCurrentUserAsync();
+                    comic.UserId = currentUser.Id;
                     _context.Update(comic);
                     await _context.SaveChangesAsync();
                 }
@@ -153,6 +159,7 @@ namespace ComicBookInventory.Controllers
         // GET: Comics/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+          
             if (id == null)
             {
                 return NotFound();
