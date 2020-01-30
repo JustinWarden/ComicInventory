@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using ComicBookInventory.Data;
 using ComicBookInventory.Models;
 using Microsoft.AspNetCore.Identity;
+using ComicBookInventory.Models.ViewModels;
+using System.IO;
 
 namespace ComicBookInventory.Controllers
 {
@@ -29,6 +31,8 @@ namespace ComicBookInventory.Controllers
         public async Task<IActionResult> Index(string searchQuery)
                
         {
+            ComicImageViewModel comicImageViewModel = new ComicImageViewModel();
+
             ApplicationUser loggedInUser = await GetCurrentUserAsync();
 
             List<Comic> comics = await _context.Comics.Where(c => c.User == loggedInUser).OrderBy(c => c.Publisher).ToListAsync();
@@ -85,6 +89,17 @@ namespace ComicBookInventory.Controllers
             ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
+                //if (ComicImageViewModel.ImageFile != null)
+                //{
+                //    using (var memoryStream = new MemoryStream())
+                //    {
+                //        await ComicImageViewModel.ImageFile.CopyToAsync(memoryStream);
+                    
+                //    }
+                //};
+
+                
+
                 var currentUser = await GetCurrentUserAsync();
                 comic.UserId = currentUser.Id;
                 _context.Add(comic);
