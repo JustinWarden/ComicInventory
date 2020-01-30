@@ -13,6 +13,7 @@ namespace ComicBookInventory.Controllers
 {
     public class WishlistsController : Controller
     {
+         
         private readonly ApplicationDbContext _context;
         // Private field to store user manager
         private readonly UserManager<ApplicationUser> _userManager;
@@ -82,6 +83,7 @@ namespace ComicBookInventory.Controllers
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", wishlist.UserId);
 
+          
 
             return View(wishlist);
         }
