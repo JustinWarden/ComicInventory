@@ -79,6 +79,7 @@ namespace ComicBookInventory.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", wishlist.UserId);
+
             return View(wishlist);
         }
 
