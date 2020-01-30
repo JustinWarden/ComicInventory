@@ -7,23 +7,34 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ComicBookInventory.Data;
 using ComicBookInventory.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace ComicBookInventory.Controllers
 {
     public class WishlistsController : Controller
     {
+         
         private readonly ApplicationDbContext _context;
-
-        public WishlistsController(ApplicationDbContext context)
+        // Private field to store user manager
+        private readonly UserManager<ApplicationUser> _userManager;
+        public WishlistsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
+        // Private method to get current user
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Wishlists
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Wishlist.Include(w => w.User);
-            return View(await applicationDbContext.ToListAsync());
+            ApplicationUser loggedInUser = await GetCurrentUserAsync();
+
+            List<Wishlist> wishlists = await _context.Wishlist.Where(w => w.User == loggedInUser).OrderBy(w => w.Publisher).ToListAsync();
+            //var applicationDbContext = _context.Wishlist.Include(w => w.User);
+            //return View(await applicationDbContext.ToListAsync());
+
+            return View(wishlists);
         }
 
         // GET: Wishlists/Details/5
@@ -33,10 +44,11 @@ namespace ComicBookInventory.Controllers
             {
                 return NotFound();
             }
-
+            var user = await GetCurrentUserAsync();
             var wishlist = await _context.Wishlist
                 .Include(w => w.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (wishlist == null)
             {
                 return NotFound();
@@ -59,13 +71,20 @@ namespace ComicBookInventory.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Wishlist wishlist)
         {
+            ModelState.Remove("UserId");
+
             if (ModelState.IsValid)
             {
+                var currentUser = await GetCurrentUserAsync();
+                wishlist.UserId = currentUser.Id;
                 _context.Add(wishlist);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", wishlist.UserId);
+
+          
+
             return View(wishlist);
         }
 
@@ -82,6 +101,8 @@ namespace ComicBookInventory.Controllers
             {
                 return NotFound();
             }
+
+
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", wishlist.UserId);
             return View(wishlist);
         }
@@ -98,10 +119,13 @@ namespace ComicBookInventory.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var currentUser = await GetCurrentUserAsync();
+                    wishlist.UserId = currentUser.Id;
                     _context.Update(wishlist);
                     await _context.SaveChangesAsync();
                 }

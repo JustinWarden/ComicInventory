@@ -17,9 +17,10 @@ namespace ComicBookInventory.Data
 
             public DbSet<ApplicationUser> Users { get; set; }
             public DbSet<Comic> Comics { get; set; }
-         
 
-            protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public DbSet<ComicBookInventory.Models.Wishlist> Wishlist { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
             {
                 base.OnModelCreating(modelBuilder);
 
@@ -101,7 +102,5 @@ namespace ComicBookInventory.Data
             //    .HasDefaultValueSql("GETDATE()");
         }
          
-
-            public DbSet<ComicBookInventory.Models.Wishlist> Wishlist { get; set; }
         }
     }

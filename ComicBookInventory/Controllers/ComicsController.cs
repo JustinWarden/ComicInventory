@@ -54,10 +54,12 @@ namespace ComicBookInventory.Controllers
             {
                 return NotFound();
             }
+            var user = await GetCurrentUserAsync();
 
             var comic = await _context.Comics
                 .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(c => c.Id == id && c.User == user);
+
             if (comic == null)
             {
                 return NotFound();
@@ -80,19 +82,25 @@ namespace ComicBookInventory.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Comic comic)
         {
+            ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
+                var currentUser = await GetCurrentUserAsync();
+                comic.UserId = currentUser.Id;
                 _context.Add(comic);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comic.UserId);
+
             return View(comic);
         }
 
         // GET: Comics/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+          
             if (id == null)
             {
                 return NotFound();
@@ -114,15 +122,20 @@ namespace ComicBookInventory.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Comic comic)
         {
+          
             if (id != comic.Id)
             {
                 return NotFound();
             }
 
+            ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
                 try
                 {
+
+                    var currentUser = await GetCurrentUserAsync();
+                    comic.UserId = currentUser.Id;
                     _context.Update(comic);
                     await _context.SaveChangesAsync();
                 }
@@ -146,6 +159,7 @@ namespace ComicBookInventory.Controllers
         // GET: Comics/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+          
             if (id == null)
             {
                 return NotFound();
@@ -153,7 +167,7 @@ namespace ComicBookInventory.Controllers
 
             var comic = await _context.Comics
                 .Include(c => c.User)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(c => c.Id == id);
             if (comic == null)
             {
                 return NotFound();
