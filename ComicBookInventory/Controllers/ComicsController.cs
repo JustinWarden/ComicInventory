@@ -82,6 +82,7 @@ namespace ComicBookInventory.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Comic comic)
         {
+            ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
                 var currentUser = await GetCurrentUserAsync();
@@ -90,6 +91,7 @@ namespace ComicBookInventory.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comic.UserId);
 
             return View(comic);

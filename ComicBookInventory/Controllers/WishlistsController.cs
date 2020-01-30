@@ -70,6 +70,8 @@ namespace ComicBookInventory.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Wishlist wishlist)
         {
+            ModelState.Remove("UserId");
+
             if (ModelState.IsValid)
             {
                 _context.Add(wishlist);
