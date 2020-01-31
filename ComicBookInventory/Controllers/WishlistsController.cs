@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ComicBookInventory.Data;
 using ComicBookInventory.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ComicBookInventory.Controllers
 {
@@ -26,6 +27,7 @@ namespace ComicBookInventory.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Wishlists
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             ApplicationUser loggedInUser = await GetCurrentUserAsync();
@@ -58,6 +60,7 @@ namespace ComicBookInventory.Controllers
         }
 
         // GET: Wishlists/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");

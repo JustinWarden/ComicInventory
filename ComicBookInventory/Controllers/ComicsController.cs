@@ -10,6 +10,7 @@ using ComicBookInventory.Models;
 using Microsoft.AspNetCore.Identity;
 using ComicBookInventory.Models.ViewModels;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ComicBookInventory.Controllers
 {
@@ -28,10 +29,10 @@ namespace ComicBookInventory.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Comics
+        [Authorize]
         public async Task<IActionResult> Index(string searchQuery)
                
         {
-            ComicImageViewModel comicImageViewModel = new ComicImageViewModel();
 
             ApplicationUser loggedInUser = await GetCurrentUserAsync();
 
@@ -73,8 +74,10 @@ namespace ComicBookInventory.Controllers
         }
 
         // GET: Comics/Create
+        [Authorize]
         public IActionResult Create()
         {
+            ComicImageViewModel comicImageViewModel = new ComicImageViewModel();
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
@@ -84,21 +87,22 @@ namespace ComicBookInventory.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Comic comic)
+
+        //public async Task<IActionResult> Create(ComicImageViewModel comicImageViewModel);
+        public async Task<IActionResult> Create([Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Comic comic, ComicImageViewModel comicImageViewModel)
         {
             ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
-                //if (ComicImageViewModel.ImageFile != null)
-                //{
-                //    using (var memoryStream = new MemoryStream())
-                //    {
-                //        await ComicImageViewModel.ImageFile.CopyToAsync(memoryStream);
+                if (comicImageViewModel.ImageFile != null)
+                {
+                    using (var memoryStream = new MemoryStream())
+                   {
+                        await comicImageViewModel.ImageFile.CopyToAsync(memoryStream);
                     
-                //    }
-                //};
+                    }
+                };
 
-                
 
                 var currentUser = await GetCurrentUserAsync();
                 comic.UserId = currentUser.Id;
