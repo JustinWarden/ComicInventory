@@ -94,26 +94,27 @@ namespace ComicBookInventory.Controllers
             ModelState.Remove("UserId");
             if (ModelState.IsValid)
             {
+                var currentUser = await GetCurrentUserAsync();
+
                 if (comicImageViewModel.ImageFile != null)
                 {
                     using (var memoryStream = new MemoryStream())
                    {
                         await comicImageViewModel.ImageFile.CopyToAsync(memoryStream);
-                    
+                        comicImageViewModel.comic.ComicImage = memoryStream.ToArray();
                     }
                 };
 
+                comicImageViewModel.comic.UserId = currentUser.Id;
+                _context.Add(comicImageViewModel.comic);
 
-                var currentUser = await GetCurrentUserAsync();
-                comic.UserId = currentUser.Id;
-                _context.Add(comic);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comic.UserId);
+           // ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comic.UserId);
 
-            return View(comic);
+            return View(comicImageViewModel);
         }
 
         // GET: Comics/Edit/5
