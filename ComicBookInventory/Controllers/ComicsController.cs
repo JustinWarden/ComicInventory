@@ -79,7 +79,7 @@ namespace ComicBookInventory.Controllers
         {
             ComicImageViewModel comicImageViewModel = new ComicImageViewModel();
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            return View(comicImageViewModel);
         }
 
         // POST: Comics/Create
@@ -89,12 +89,12 @@ namespace ComicBookInventory.Controllers
         [ValidateAntiForgeryToken]
 
         //public async Task<IActionResult> Create(ComicImageViewModel comicImageViewModel);
-        public async Task<IActionResult> Create([Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Comic comic, ComicImageViewModel comicImageViewModel)
+        public async Task<IActionResult> Create( ComicImageViewModel comicImageViewModel)
         {
-            ModelState.Remove("UserId");
+            ModelState.Remove("comic.UserId");
             if (ModelState.IsValid)
             {
-                var currentUser = await GetCurrentUserAsync();
+                var user = await GetCurrentUserAsync();
 
                 if (comicImageViewModel.ImageFile != null)
                 {
@@ -105,34 +105,43 @@ namespace ComicBookInventory.Controllers
                     }
                 };
 
-                comicImageViewModel.comic.UserId = currentUser.Id;
+                comicImageViewModel.comic.UserId = user.Id;
                 _context.Add(comicImageViewModel.comic);
 
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id = comicImageViewModel.comic.Id.ToString()});
             }
 
-           // ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comic.UserId);
+            //ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comic.UserId);
 
             return View(comicImageViewModel);
         }
 
         // GET: Comics/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(ComicImageViewModel comicImageViewModel)
         {
-          
-            if (id == null)
+            ModelState.Remove("comic.UserId");
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                var user = await GetCurrentUserAsync();
+
+                if (comicImageViewModel.ImageFile != null)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await comicImageViewModel.ImageFile.CopyToAsync(memoryStream);
+                        comicImageViewModel.comic.ComicImage = memoryStream.ToArray();
+                    }
+                };
+
+                comicImageViewModel.comic.UserId = user.Id;
+                _context.Add(comicImageViewModel.comic);
+
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index), new { id = comicImageViewModel.comic.Id.ToString() });
             }
 
-            var comic = await _context.Comics.FindAsync(id);
-            if (comic == null)
-            {
-                return NotFound();
-            }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comic.UserId);
-            return View(comic);
+            return View(comicImageViewModel);
         }
 
         // POST: Comics/Edit/5

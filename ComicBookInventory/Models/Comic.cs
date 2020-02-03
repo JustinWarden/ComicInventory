@@ -27,9 +27,9 @@ namespace ComicBookInventory.Models
         public int VolumeNumber { get; set; }
 
         public double Price { get; set; }
+        [StringLength(55, ErrorMessage = "Please shorten the Notes to 55 characters")]
 
         public string Notes { get; set; }
-        [StringLength(55, ErrorMessage = "Please shorten the Notes to 55 characters")]
 
 
         [Display(Name = "Comic Image")]
