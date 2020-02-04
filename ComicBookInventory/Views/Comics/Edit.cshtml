@@ -1,4 +1,4 @@
-﻿@model ComicBookInventory.Models.ViewModels.ComicImageViewModel
+﻿@model ComicBookInventory.Models.ViewModels.EditComicImageViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -53,9 +53,9 @@
                 <span asp-validation-for="comic.Notes" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ImageFile" class="control-label"></label>
-                <input asp-for="ImageFile" class="file" />
-                <span asp-validation-for="ImageFile" class="text-danger"></span>
+                <label asp-for="@Model.ImageFile" class="control-label"></label>
+                <input asp-for="@Model.ImageFile" class="file" />
+                <span asp-validation-for="@Model.ImageFile" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
