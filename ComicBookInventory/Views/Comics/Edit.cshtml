@@ -1,4 +1,4 @@
-﻿@model ComicBookInventory.Models.Comic
+﻿@model ComicBookInventory.Models.ViewModels.EditComicImageViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -7,56 +7,55 @@
 <h1>Edit</h1>
 
 <h4>Comic</h4>
+<img src="~/Images/wolverineGif.gif" />
+<img src="~/Images/icemanGif.gif" />
+
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            @*<div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
-                <span asp-validation-for="UserId" class="text-danger"></span>
-            </div>*@
+            <input type="hidden" asp-for="comic.Id"/>
+
             <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <label asp-for="comic.Title" class="control-label"></label>
+                <input asp-for="comic.Title" class="form-control" />
+                <span asp-validation-for="comic.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IssueNumber" class="control-label"></label>
-                <input asp-for="IssueNumber" class="form-control" />
-                <span asp-validation-for="IssueNumber" class="text-danger"></span>
+                <label asp-for="comic.IssueNumber" class="control-label"></label>
+                <input asp-for="comic.IssueNumber" class="form-control" />
+                <span asp-validation-for="comic.IssueNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Publisher" class="control-label"></label>
-                <input asp-for="Publisher" class="form-control" />
-                <span asp-validation-for="Publisher" class="text-danger"></span>
+                <label asp-for="comic.Publisher" class="control-label"></label>
+                <input asp-for="comic.Publisher" class="form-control" />
+                <span asp-validation-for="comic.Publisher" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Year" class="control-label"></label>
-                <input asp-for="Year" class="form-control" />
-                <span asp-validation-for="Year" class="text-danger"></span>
+                <label asp-for="comic.Year" class="control-label"></label>
+                <input asp-for="comic.Year" class="form-control" />
+                <span asp-validation-for="comic.Year" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="VolumeNumber" class="control-label"></label>
-                <input asp-for="VolumeNumber" class="form-control" />
-                <span asp-validation-for="VolumeNumber" class="text-danger"></span>
+                <label asp-for="comic.VolumeNumber" class="control-label"></label>
+                <input asp-for="comic.VolumeNumber" class="form-control" />
+                <span asp-validation-for="comic.VolumeNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+                <label asp-for="comic.Price" class="control-label"></label>
+                <input asp-for="comic.Price" class="form-control" />
+                <span asp-validation-for="comic.Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Notes" class="control-label"></label>
-                <input asp-for="Notes" class="form-control" />
-                <span asp-validation-for="Notes" class="text-danger"></span>
+                <label asp-for="comic.Notes" class="control-label"></label>
+                <input asp-for="comic.Notes" class="form-control" />
+                <span asp-validation-for="comic.Notes" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ComicImage" class="control-label"></label>
-                <input asp-for="ComicImage" class="form-control" />
-                <span asp-validation-for="ComicImage" class="text-danger"></span>
+                <label asp-for="@Model.ImageFile" class="control-label"></label>
+                <input asp-for="@Model.ImageFile" class="file" />
+                <span asp-validation-for="@Model.ImageFile" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

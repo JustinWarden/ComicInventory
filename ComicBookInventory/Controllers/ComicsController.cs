@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using ComicBookInventory.Data;
 using ComicBookInventory.Models;
 using Microsoft.AspNetCore.Identity;
+using ComicBookInventory.Models.ViewModels;
+using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ComicBookInventory.Controllers
 {
@@ -26,9 +29,11 @@ namespace ComicBookInventory.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: Comics
+        [Authorize]
         public async Task<IActionResult> Index(string searchQuery)
                
         {
+
             ApplicationUser loggedInUser = await GetCurrentUserAsync();
 
             List<Comic> comics = await _context.Comics.Where(c => c.User == loggedInUser).OrderBy(c => c.Publisher).ToListAsync();
@@ -69,10 +74,12 @@ namespace ComicBookInventory.Controllers
         }
 
         // GET: Comics/Create
+        [Authorize]
         public IActionResult Create()
         {
+            ComicImageViewModel comicImageViewModel = new ComicImageViewModel();
             ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            return View(comicImageViewModel);
         }
 
         // POST: Comics/Create
@@ -80,68 +87,95 @@ namespace ComicBookInventory.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Comic comic)
+
+        //public async Task<IActionResult> Create(ComicImageViewModel comicImageViewModel);
+        public async Task<IActionResult> Create( ComicImageViewModel comicImageViewModel)
         {
-            ModelState.Remove("UserId");
+            ModelState.Remove("comic.UserId");
             if (ModelState.IsValid)
             {
-                var currentUser = await GetCurrentUserAsync();
-                comic.UserId = currentUser.Id;
-                _context.Add(comic);
+
+                var user = await GetCurrentUserAsync();
+
+                if (comicImageViewModel.ImageFile != null)
+                {
+                    using (var memoryStream = new MemoryStream())
+                   {
+                        await comicImageViewModel.ImageFile.CopyToAsync(memoryStream);
+                        comicImageViewModel.comic.ComicImage = memoryStream.ToArray();
+                    }
+                };
+
+                comicImageViewModel.comic.UserId = user.Id;
+                _context.Add(comicImageViewModel.comic);
+
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { id = comicImageViewModel.comic.Id.ToString()});
             }
 
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comic.UserId);
-
-            return View(comic);
+            return View(comicImageViewModel);
         }
 
-        // GET: Comics/Edit/5
+        // GET: Comics/Edit/5   ORIGINAL!!!!
+
         public async Task<IActionResult> Edit(int? id)
         {
-          
             if (id == null)
             {
                 return NotFound();
             }
+            var comic = await _context.Comics
+                .FindAsync(id);
 
-            var comic = await _context.Comics.FindAsync(id);
             if (comic == null)
             {
                 return NotFound();
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comic.UserId);
-            return View(comic);
+            var viewModel = new EditComicImageViewModel()
+            {
+                comic = comic
+            };
+           
+          return View(viewModel);
         }
-
-        // POST: Comics/Edit/5
+        // POST: Clients/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Comic comic)
+        public async Task<IActionResult> Edit(int id, EditComicImageViewModel viewModel)
         {
-          
-            if (id != comic.Id)
+            var comicWithImage = await _context.Comics.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+            if (id != viewModel.comic.Id)
             {
                 return NotFound();
             }
-
-            ModelState.Remove("UserId");
+            ModelState.Remove("comic.UserId");
             if (ModelState.IsValid)
             {
                 try
                 {
-
                     var currentUser = await GetCurrentUserAsync();
-                    comic.UserId = currentUser.Id;
-                    _context.Update(comic);
+                    if (viewModel.ImageFile == null && comicWithImage.ComicImage != null)
+                    {
+                        viewModel.comic.ComicImage = comicWithImage.ComicImage;
+                    }
+                    else
+                    {
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await viewModel.ImageFile.CopyToAsync(memoryStream);
+                            viewModel.comic.ComicImage = memoryStream.ToArray();
+                        }
+                    }
+                    ;
+                    viewModel.comic.UserId = currentUser.Id;
+                    _context.Update(viewModel.comic);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ComicExists(comic.Id))
+                    if (!ComicExists(viewModel.comic.Id))
                     {
                         return NotFound();
                     }
@@ -152,9 +186,52 @@ namespace ComicBookInventory.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comic.UserId);
-            return View(comic);
+            else
+            {
+            }
+            return View(viewModel);
         }
+
+        // POST: Comics/Edit/5  ORIGINAL!!!!!!!
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Comic comic)
+        //{
+          
+        //    if (id != comic.Id)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    ModelState.Remove("UserId");
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+
+        //            var currentUser = await GetCurrentUserAsync();
+        //            comic.UserId = currentUser.Id;
+        //            _context.Update(comic);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!ComicExists(comic.Id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comic.UserId);
+        //    return View(comic);
+        //}
 
         // GET: Comics/Delete/5
         public async Task<IActionResult> Delete(int? id)
