@@ -16,7 +16,7 @@ namespace ComicBookInventory.Controllers
 {
     public class ComicsController : Controller
     {
-            
+ 
         private readonly ApplicationDbContext _context;
         // Private field to store user manager
         private readonly UserManager<ApplicationUser> _userManager;
@@ -27,6 +27,7 @@ namespace ComicBookInventory.Controllers
         }
         // Private method to get current user
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
 
         // GET: Comics
         [Authorize]
@@ -46,7 +47,6 @@ namespace ComicBookInventory.Controllers
                     
                     
             }
-            
 
 
             return View(comics);
@@ -138,7 +138,7 @@ namespace ComicBookInventory.Controllers
            
           return View(viewModel);
         }
-        // POST: Clients/Edit/5
+        // POST: Comics/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -191,47 +191,6 @@ namespace ComicBookInventory.Controllers
             }
             return View(viewModel);
         }
-
-        // POST: Comics/Edit/5  ORIGINAL!!!!!!!
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,Title,IssueNumber,Publisher,Year,VolumeNumber,Price,Notes,ComicImage")] Comic comic)
-        //{
-          
-        //    if (id != comic.Id)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    ModelState.Remove("UserId");
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-
-        //            var currentUser = await GetCurrentUserAsync();
-        //            comic.UserId = currentUser.Id;
-        //            _context.Update(comic);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!ComicExists(comic.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", comic.UserId);
-        //    return View(comic);
-        //}
 
         // GET: Comics/Delete/5
         public async Task<IActionResult> Delete(int? id)
