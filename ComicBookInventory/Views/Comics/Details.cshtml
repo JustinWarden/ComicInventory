@@ -3,12 +3,14 @@
 @{
     ViewData["Title"] = "Details";
 }
+<center>
+    <h1>Details for @Model.Title #@Model.IssueNumber</h1>
+</center>
+<center>
+    <img src="~/Images/rogueGif.gif" />
+</center>
+<hr />
 
-<h1>Details</h1>
-<img src="~/Images/rogueGif.gif" />
-<div>
-    <h4>Comic</h4>
-    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
@@ -52,27 +54,29 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Notes)
         </dd>
-       
-        @if (Model.ComicImage != null)
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.ComicImage)========>
-            </dt>
-            <dd>
-                @{
-                    var base64 = Convert.ToBase64String(Model.ComicImage);
-                    var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
-                    
-                }
 
-                <img class="userImg" src="@imgSrc" width=30% />
-            </dd>
-           
+@if (Model.ComicImage != null)
+{
+
+    <dt>
+        @Html.DisplayNameFor(model => model.ComicImage)========>
+    </dt>
+    <dd>
+        @{
+            var base64 = Convert.ToBase64String(Model.ComicImage);
+            var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+
         }
+        
+            <img class="userImg" src="@imgSrc" width=30% />
+       
+    </dd>
+
+}
+          
+            </dl>
 
 
-    </dl>
-</div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a> |
