@@ -28,6 +28,7 @@ namespace ComicBookInventory.Controllers
         // Private method to get current user
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
+
         // GET: Comics
         [Authorize]
         public async Task<IActionResult> Index(string searchQuery)
@@ -138,7 +139,7 @@ namespace ComicBookInventory.Controllers
            
           return View(viewModel);
         }
-        // POST: Clients/Edit/5
+        // POST: Comics/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]

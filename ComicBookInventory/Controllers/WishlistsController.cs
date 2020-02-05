@@ -33,8 +33,7 @@ namespace ComicBookInventory.Controllers
             ApplicationUser loggedInUser = await GetCurrentUserAsync();
 
             List<Wishlist> wishlists = await _context.Wishlist.Where(w => w.User == loggedInUser).OrderBy(w => w.Publisher).ToListAsync();
-            //var applicationDbContext = _context.Wishlist.Include(w => w.User);
-            //return View(await applicationDbContext.ToListAsync());
+          
 
             return View(wishlists);
         }
@@ -47,6 +46,7 @@ namespace ComicBookInventory.Controllers
                 return NotFound();
             }
             var user = await GetCurrentUserAsync();
+
             var wishlist = await _context.Wishlist
                 .Include(w => w.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
