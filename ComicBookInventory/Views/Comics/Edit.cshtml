@@ -3,16 +3,16 @@
 @{
     ViewData["Title"] = "Edit";
 }
+    <center>
+        <h1>EDIT @Model.comic.Title#@Model.comic.IssueNumber</h1>
 
-<h1>Edit</h1>
 
-<h4>Comic</h4>
-<img src="~/Images/wolverineGif.gif" />
-<img src="~/Images/icemanGif.gif" />
-
+        <img src="~/Images/wolverineGif.gif" />
+        <img src="~/Images/icemanGif.gif" />
+    </center>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="card-columns">
+    <div class="col-lg-10">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="comic.Id"/>

@@ -3,13 +3,15 @@
 @{
     ViewData["Title"] = "Create";
 }
-<h1>Add Comic To Inventory</h1>
-<img src="~/Images/SabertoothGif.gif" />
-<img src="~/Images/psylockeGif.gif" />
-<div id="createbackground"></div>
+    <center>
+        <h1>ADD A COMIC TO YOUR INVENTORY</h1>
+        <img src="~/Images/SabertoothGif.gif" />
+        <img src="~/Images/psylockeGif.gif" />
+        <div id="createbackground"></div>
+    </center>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="card-columns">
+    <div class="col-lg-10">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -60,10 +62,11 @@
     </div>
 </div>
 
+<br />
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">BACK TO LIST</a>
 </div>
-
+   
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
