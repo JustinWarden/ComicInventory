@@ -3,13 +3,13 @@
 @{
     ViewData["Title"] = "Edit";
 }
-
-<h1>Edit Wish List Comic</h1>
-<img src="~/Images/forgeGif.gif" />
-
+    <center>
+        <h1>EDIT YOUR COMIC WISHLIST</h1>
+        <img src="~/Images/forgeGif.gif" />
+    </center>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="card-columns">
+    <div class="col-lg-10">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
@@ -23,6 +23,8 @@
                 <input asp-for="IssueNumber" class="form-control" />
                 <span asp-validation-for="IssueNumber" class="text-danger"></span>
             </div>
+            <br />
+            <br />
             <div class="form-group">
                 <label asp-for="Publisher" class="control-label"></label>
                 <input asp-for="Publisher" class="form-control" />
