@@ -13,78 +13,84 @@
 <hr />
 
 <div class="card-columns">
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Title)
+    <div class="deletetext">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
         <br />
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Title)
-    </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IssueNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IssueNumber)
+        </dd>
+        <br />
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Publisher)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Publisher)
+        </dd>
+        <br />
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Year)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+        <br />
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.VolumeNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.VolumeNumber)
+        </dd>
+        <br />
+        <br />
+        <br />
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+        <br />
+        
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Notes)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Notes)
+        </dd>
+        <br />
+        <br />
+        <br />
+        <br />
+        <div>
+            <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+            <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+        
+            <br />
+            @if (Model.ComicImage != null)
+            {
+                <dd>
+                    @{
+                        var base64 = Convert.ToBase64String(Model.ComicImage);
+                        var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
 
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.IssueNumber)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.IssueNumber)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Publisher)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Publisher)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Year)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Year)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.VolumeNumber)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.VolumeNumber)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Price)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Price)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Notes)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Notes)
-    </dd>
-    <br />
-    <br />
-    <br />
-    <div>
-        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-        <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a> |
-        <a asp-action="Index">Back to List</a>
-    </div>
+                    }
+                    <img class="userImg" src="@imgSrc" width=100% />
 
-    @if (Model.ComicImage != null)
-    {
-
-        @*<dt>
-                @Html.DisplayNameFor(model => model.ComicImage)========>
-            </dt>*@
-        <dd>
-            @{
-                var base64 = Convert.ToBase64String(Model.ComicImage);
-                var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
+                </dd>
 
             }
-
-            <img class="userImg" src="@imgSrc" width=100% />
-
-        </dd>
-
-    }
-
+       
+    </div>
 
     </dl>
 

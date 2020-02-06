@@ -10,54 +10,61 @@
         <img src="~/Images/gambitGif.gif" />
         <h3>Are you sure you want to delete @Model.Title  #@Model.IssueNumber ?  </h3>
     </center>
-
+<br />
         <hr />
         <dl class="card-columns">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Title)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Title)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.IssueNumber)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.IssueNumber)
-            </dd>
-            <br />
-            <br />
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Publisher)
+            <div class="deletetext">
+                <br />
+                <br />
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Title)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Title)
+                </dd>
+                <br />
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.IssueNumber)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.IssueNumber)
+                </dd>
+                <br />
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Publisher)
 
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Publisher)
             </dd>
+            <br />
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Year)
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Year)
             </dd>
+            <br />
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.VolumeNumber)
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.VolumeNumber)
             </dd>
+            <br />
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Price)
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Price)
             </dd>
+            <br />
             <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.Notes)
             </dt>
             <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.Notes)
             </dd>
-
+            </div>
         </dl>
         <center>
             <form asp-action="Delete">
