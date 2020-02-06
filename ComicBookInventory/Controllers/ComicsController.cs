@@ -44,8 +44,7 @@ namespace ComicBookInventory.Controllers
             {
                 comics = comics.Where(comic => comic.Title.ToLower().Contains(searchQuery) || 
                 comic.Publisher.ToLower().Contains(searchQuery)).ToList();
-                    
-                    
+                
             }
 
 
