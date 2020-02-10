@@ -17,7 +17,7 @@
 @*coloums to dislplay comic info*@
         <dl class="card-columns">
             <div class="deletetext">
-                <br />
+             <br />
                 <br />
                 <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.Title)
@@ -69,7 +69,7 @@
             </dd>
             </div>
         </dl>
-        <center>
+      
             @*delete and return to index buttons*@
             <form asp-action="Delete">
                 <input type="hidden" asp-for="Id" />
@@ -77,4 +77,4 @@
                 <a asp-action="Index">Back to List</a>
             </form>
 
-        </center>
+    
