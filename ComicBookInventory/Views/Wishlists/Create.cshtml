@@ -3,11 +3,13 @@
 @{
     ViewData["Title"] = "Create";
 }
+@*center title and image*@
     <center>
         <h1>ADD A COMIC TO YOUR WISHLIST</h1>
         <img src="~/Images/cableGif.gif" />
     </center>
 <hr />
+@*columns for comic info*@
 <div class="card-columns">
     <div class="col-lg-10">
         <form asp-action="Create">
@@ -56,7 +58,7 @@
         </form>
     </div>
 </div>
-
+@*return back to list link*@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

@@ -3,13 +3,14 @@
 @{
     ViewData["Title"] = "Create";
 }
+@*center title and two images*@
     <center>
         <h1>ADD A COMIC TO YOUR INVENTORY</h1>
         <img src="~/Images/SabertoothGif.gif" />
         <img src="~/Images/psylockeGif.gif" />
-        <div id="createbackground"></div>
     </center>
 <hr />
+@*columns to display comic form*@
 <div class="card-columns">
     <div class="col-lg-10">
         <form asp-action="Create" enctype="multipart/form-data">
@@ -56,6 +57,7 @@
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
             <div class="form-group">
+                @*submit*@ 
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -64,6 +66,7 @@
 
 <br />
 <div>
+    @*link back to index*@
     <a asp-action="Index">BACK TO LIST</a>
 </div>
    

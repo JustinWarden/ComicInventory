@@ -4,14 +4,16 @@
     ViewData["Title"] = "Details";
 }
 <center>
+    @*model.title and model.issuenumber will display each indivdual title and issue number selected*@
     <h1>Details for @Model.Title #@Model.IssueNumber</h1>
 </center>
+@*center two images*@
 <center>
     <img src="~/Images/wolverineGif.gif" />
     <img src="~/Images/icemanGif.gif" />
 </center>
 <hr />
-
+@*coloums to dislplay comic info*@
 <div class="card-columns">
     <div class="deletetext">
         <dt class="col-sm-2">
@@ -48,6 +50,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.VolumeNumber)
         </dd>
+        @*these breaks help align the content making it more readable*@
         <br />
         <br />
         <br />
@@ -58,38 +61,41 @@
             @Html.DisplayFor(model => model.Price)
         </dd>
         <br />
-        
+
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Notes)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Notes)
         </dd>
+        @*these breaks help align the content making it more readable*@
         <br />
         <br />
         <br />
         <br />
         <div>
+            @*edit delete and back to index buttons*@
             <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
             <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a> |
             <a asp-action="Index">Back to List</a>
         </div>
-        
-            <br />
-            @if (Model.ComicImage != null)
-            {
-                <dd>
-                    @{
-                        var base64 = Convert.ToBase64String(Model.ComicImage);
-                        var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
 
-                    }
-                    <img class="userImg" src="@imgSrc" width=100% />
+        <br />
+        @*this is the image that has been uploaded to the database*@
+        @if (Model.ComicImage != null)
+        {
+            <dd>
+                @{
+                    var base64 = Convert.ToBase64String(Model.ComicImage);
+                    var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
 
-                </dd>
+                }
+                <img class="userImg" src="@imgSrc" width=100% />
 
-            }
-       
+            </dd>
+
+        }
+
     </div>
 
     </dl>

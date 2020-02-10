@@ -2,19 +2,22 @@
 
 @{
     ViewData["Title"] = "Delete";
-}
+
+}@*center title and image*@
     <center>
         <h1>DELETE COMIC FROM INVENTORY</h1>
-
-
         <img src="~/Images/gambitGif.gif" />
+
+        @*model.title and model.issuenumber will display each indivdual title and issue number selected*@
         <h3>Are you sure you want to delete @Model.Title  #@Model.IssueNumber ?  </h3>
     </center>
+
 <br />
         <hr />
+@*coloums to dislplay comic info*@
         <dl class="card-columns">
             <div class="deletetext">
-                <br />
+             <br />
                 <br />
                 <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.Title)
@@ -66,11 +69,12 @@
             </dd>
             </div>
         </dl>
-        <center>
+      
+            @*delete and return to index buttons*@
             <form asp-action="Delete">
                 <input type="hidden" asp-for="Id" />
                 <input type="submit" value="Delete" class="btn btn-danger" /> |
                 <a asp-action="Index">Back to List</a>
             </form>
 
-        </center>
+    

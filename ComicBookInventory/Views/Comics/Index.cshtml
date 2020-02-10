@@ -3,18 +3,26 @@
 @{
     ViewData["Title"] = "Index";
 }
+
+@*center the element on the page*@
 <center>
+
+    @*center the heading with two images below*@
 <h1>SEARCH YOUR COMIC BOOK INVENTORY</h1>
 <img src="~/Images/magnetoGif.gif" />
 <img src="~/Images/nightcrawlerGif.gif" />
 <br />
+
+    @*searchbar the can search comic inventory by title or publisher*@
 <form asp-controller="comics" asp-action="Index">
     <input name="searchQuery"  placeholder="Title or Publisher" />
     <button>Search</button>
 </form>
+    @*model.count will count the number of comics in inventory*@
 <h4>You Have @Model.Count() Comics in your Inventory </h4>
     </center>
 
+@*this index table is the main part of the comic inventory system*@ 
 <table class="table">
     <thead>
         <tr>
@@ -43,6 +51,8 @@
         </tr>
     </thead>
     <tbody>
+
+        @*foreach to loop through the list of comics in the inventory*@
         @foreach (var item in Model)
         {
         <tr>
@@ -69,7 +79,7 @@
             </td>
 
             <td>
-
+                @*details button on the side of the inventory tabel to view each comic individually*@ 
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a>
 
             </td>
@@ -77,6 +87,8 @@
 
         }
     </tbody>
-
 </table>
+
+@*print button with a javascript function to call the window.print method 
+to bring up print screen and print inventory list*@
 <button class="print">PRINT</button>

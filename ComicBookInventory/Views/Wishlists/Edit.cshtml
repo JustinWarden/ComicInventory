@@ -3,11 +3,14 @@
 @{
     ViewData["Title"] = "Edit";
 }
+@*center image and title*@
     <center>
         <h1>EDIT YOUR COMIC WISHLIST</h1>
         <img src="~/Images/forgeGif.gif" />
     </center>
 <hr />
+
+@*comic infor diplayed in columns*@
 <div class="card-columns">
     <div class="col-lg-10">
         <form asp-action="Edit">
@@ -57,6 +60,7 @@
     </div>
 </div>
 
+@*back to list link*@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>

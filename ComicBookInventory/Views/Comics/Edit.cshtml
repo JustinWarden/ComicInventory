@@ -2,17 +2,21 @@
 
 @{
     ViewData["Title"] = "Edit";
-}
-    <center>
-        <h1>EDIT @Model.comic.Title #@Model.comic.IssueNumber</h1>
-        <img src="~/Images/rogueGif.gif" />
-    </center>
+
+}}
+@*center title and image*@
+<center>
+    @*model.title and model.issuenumber will display each indivdual title and issue number selected*@
+    <h1>EDIT @Model.comic.Title #@Model.comic.IssueNumber</h1>
+    <img src="~/Images/rogueGif.gif" />
+</center>
 <hr />
+@*coloums to dislplay comic info*@
 <div class="card-columns">
     <div class="col-lg-10">
         <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="comic.Id"/>
+            <input type="hidden" asp-for="comic.Id" />
 
             <div class="form-group">
                 <label asp-for="comic.Title" class="control-label"></label>
@@ -54,6 +58,7 @@
                 <input asp-for="@Model.ImageFile" class="file" />
                 <span asp-validation-for="@Model.ImageFile" class="text-danger"></span>
             </div>
+            @*submit button to save info*@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -62,6 +67,7 @@
 </div>
 
 <div>
+    @*back to index link*@
     <a asp-action="Index">Back to List</a>
 </div>
 
